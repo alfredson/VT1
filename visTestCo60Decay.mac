@@ -1,0 +1,108 @@
+# visualization test for VT1
+/run/initialize
+
+/control/verbose 2
+/vis/verbose parameters
+/vis/open OGL
+/vis/drawVolume
+/vis/geometry/set/visibility World 0 0
+/vis/geometry/set/visibility OuterSphere 0 0
+
+/vis/geometry/set/visibility InnerVolume 0 1
+/vis/geometry/set/forceWireframe InnerVolume 0 1
+/vis/geometry/set/forceAuxEdgeVisible InnerVolume 0 1
+/vis/geometry/set/colour InnerVolume 0 0.289 0.85 0.6443
+
+/vis/geometry/set/visibility LeadShield 0 1
+/vis/geometry/set/forceWireframe LeadShield 0 1
+/vis/geometry/set/forceAuxEdgeVisible LeadShield 0 1
+/vis/geometry/set/colour LeadShield 0 0.482 0.85 0.6443
+
+/vis/geometry/set/visibility CopperLayer 0 1
+/vis/geometry/set/forceWireframe CopperLayer 0 1
+/vis/geometry/set/forceAuxEdgeVisible CopperLayer 0 1
+/vis/geometry/set/colour CopperLayer 0 0.482 0.25 0.3443
+
+/vis/geometry/set/visibility Co60Disk 0 1
+/vis/geometry/set/forceWireframe Co60Disk 0 1
+/vis/geometry/set/forceAuxEdgeVisible Co60Disk 0 1
+/vis/geometry/set/colour Co60Disk 0 0.282 0.95 0.3443
+
+/vis/geometry/set/visibility Cryostat 0 1
+/vis/geometry/set/forceWireframe Cryostat 0 1
+/vis/geometry/set/forceAuxEdgeVisible Cryostat 0 1
+/vis/geometry/set/colour Cryostat 0 0.982 0.25 0.5443
+
+/vis/geometry/set/visibility CryostatCavity 0 1
+/vis/geometry/set/forceWireframe CryostatCavity 0 1
+/vis/geometry/set/forceAuxEdgeVisible CryostatCavity 0 1
+/vis/geometry/set/colour CryostatCavity 0 0.382 0.65 0.2443
+
+/vis/geometry/set/visibility Crystal 0 1
+/vis/geometry/set/forceWireframe Crystal 0 1
+/vis/geometry/set/forceAuxEdgeVisible Crystal 0 1
+/vis/geometry/set/colour Crystal 0 0.282 0.35 0.8443
+
+/vis/geometry/set/visibility MountCupWall 0 1
+/vis/geometry/set/forceWireframe MountCupWall 0 1
+/vis/geometry/set/forceAuxEdgeVisible MountCupWall 0 1
+/vis/geometry/set/colour MountCupWall 0 0.582 0.29 0.4824
+
+/vis/geometry/set/visibility IRShield 0 1
+/vis/geometry/set/forceWireframe IRShield 0 1
+/vis/geometry/set/forceAuxEdgeVisible IRShield 0 1
+/vis/geometry/set/colour IRShield 0 0.385 0.58 0.5829
+
+/vis/geometry/set/visibility MountCupBase 0 1
+/vis/geometry/set/forceWireframe MountCupBase 0 1
+/vis/geometry/set/forceAuxEdgeVisible MountCupBase 0 1
+/vis/geometry/set/colour MountCupBase 0 0.582 0.28 0.9274
+
+/vis/geometry/set/visibility ColdFinger 0 1
+/vis/geometry/set/forceWireframe ColdFinger 0 1
+/vis/geometry/set/forceAuxEdgeVisible ColdFinger 0 1
+/vis/geometry/set/colour ColdFinger 0 0.395 0.83 0.3853
+
+/vis/geometry/set/visibility CopperPlate 0 1
+/vis/geometry/set/forceWireframe CopperPlate 0 1
+/vis/geometry/set/forceAuxEdgeVisible CopperPlate 0 1
+/vis/geometry/set/colour CopperPlate 0 0.395 0.28 0.8492
+
+/vis/geometry/set/visibility AlCylinder 0 1
+/vis/geometry/set/forceWireframe AlCylinder 0 1
+/vis/geometry/set/forceAuxEdgeVisible AlCylinder 0 1
+/vis/geometry/set/colour AlCylinder 0 0.284 0.48 0.4853
+
+/vis/geometry/set/visibility AlMount 0 1
+/vis/geometry/set/forceWireframe AlMount 0 1
+/vis/geometry/set/forceAuxEdgeVisible AlMount 0 1
+/vis/geometry/set/colour AlMount 0 0.582 0.19 0.6932
+
+/vis/geometry/set/visibility CopperRod 0 1
+/vis/geometry/set/forceWireframe CopperRod 0 1
+/vis/geometry/set/forceAuxEdgeVisible CopperRod 0 1
+/vis/geometry/set/colour CopperRod 0 0.395 0.83 0.2845
+
+/vis/geometry/set/visibility CryostatCopperRod 0 1
+/vis/geometry/set/forceWireframe CryostatCopperRod 0 1
+/vis/geometry/set/forceAuxEdgeVisible CryostatCopperRod 0 1
+/vis/geometry/set/colour CryostatCopperRod 0 0.28 0.37 0.93
+
+/vis/geometry/set/visibility ColdFingerCopperRod 0 1
+/vis/geometry/set/forceWireframe ColdFingerCopperRod 0 1
+/vis/geometry/set/forceAuxEdgeVisible ColdFingerCopperRod 0 1
+/vis/geometry/set/colour ColdFingerCopperRod 0 0.28 0.37 0.93
+
+/vis/viewer/set/viewpointVector 0.45 0.55 0.5
+#/vis/viewer/set/viewpointVector 0 0 0
+/vis/viewer/set/upVector 0 0 1
+/vis/scene/add/axes 0.0 0.0 0.0 0.161 m
+/vis/scene/add/scale 0.161 m
+/vis/ogl/set/displayListLimit 1000000
+
+/vis/scene/add/trajectories
+/vis/scene/endOfEventAction accumulate
+/tracking/storeTrajectory 1
+
+/run/beamOn 10
+/vis/ogl/printEPS

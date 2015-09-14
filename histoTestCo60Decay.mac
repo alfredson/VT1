@@ -1,0 +1,8 @@
+#histogramming test for VT1
+/run/initialize
+
+/DSIM/histo/setLowerBound 0.1 MeV
+/DSIM/histo/setUpperBound 3.3 MeV
+/DSIM/histo/setHistoTitle Energy deposition in detector from cobalt-60 decays in the calibration disk
+
+/run/beamOn 1000000

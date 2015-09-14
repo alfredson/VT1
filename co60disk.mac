@@ -1,0 +1,18 @@
+# Runtime macro for a simulated Cobalt-60 calibration disk
+/run/initialize
+/gps/particle ion
+/gps/ion 27 60
+
+/VT1/histo/setLowerBound 1.0 MeV
+/VT1/histo/setUpperBound 1.9 MeV
+/VT1/histo/setHistoTitle Energy deposition in germanium cylinder, cobalt-60 disk
+
+/gps/position -4. 0 0 cm
+/gps/pos/type Volume
+/gps/pos/shape Cylinder
+/gps/pos/radius 1. cm
+/gps/pos/halfz 0.1 cm
+/gps/ang/rot1 0 -1 0
+/gps/ang/rot2 0 1 0
+
+/run/beamOn 1000000
