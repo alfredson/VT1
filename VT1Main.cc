@@ -32,7 +32,7 @@ int main(int argc, char** argv)
 
   VT1Histo* histo = new VT1Histo();
 
-  VT1PrimaryGeneratorAction* generatorAction = new VT1PrimaryGeneratorAction;
+  VT1PrimaryGeneratorAction* generatorAction = new VT1PrimaryGeneratorAction(detector);
   runManager->SetUserAction(generatorAction);
 
   VT1RunAction* runAction = new VT1RunAction(histo);

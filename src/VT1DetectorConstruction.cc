@@ -20,13 +20,15 @@
 #include <cmath>
 
 VT1DetectorConstruction::VT1DetectorConstruction()
-  : G4VUserDetectorConstruction(), fPhysCrystal(0), fPhysOuterSphere(0),
-    fPhysInnerVolume(0), fPhysLeadShield(0), fPhysCopperLayer(0),
+  : G4VUserDetectorConstruction(), fPhysCrystal(0), //fPhysOuterSphere(0),
+    //fPhysInnerVolume(0),
+    fPhysLeadShield(0), fPhysCopperLayer(0),
     fPhysCryostat(0), fPhysCryostatCavity(0), fPhysMountCupWall(0),
     fPhysIRShield(0), fPhysMountCupBase(0), fPhysColdFinger(0),
     fPhysCopperPlate(0), fPhysAlCylinder(0), fPhysAlMount(0),
     fPhysCopperRod(0), fPhysCryostatCopperRod(0),
-    fPhysColdFingerCopperRod(0), fPhysCo60Disk(0), fPhysWorld(0)
+    fPhysColdFingerCopperRod(0), fPhysCo60Disk(0),
+    fPhysWorld(0)
 {
 }
 
@@ -71,40 +73,17 @@ G4VPhysicalVolume* VT1DetectorConstruction::Construct()
   G4Box* solidWorld = new G4Box("World", world_hx, world_hy, world_hz);
 
   // Outer volume
-  G4double outerSphere_rMin = 0.0;
-  G4double outerSphere_rMax = 70.0*cm;
-  G4Sphere* solidOuterSphere = new G4Sphere("OuterSphere", outerSphere_rMin, outerSphere_rMax,
-					       phiStart, phiTotal, thetaStart, thetaTotal);
+  // G4double outerSphere_rMin = 0.0;
+  // G4double outerSphere_rMax = 70.0*cm;
+  // G4Sphere* solidOuterSphere = new G4Sphere("OuterSphere", outerSphere_rMin, outerSphere_rMax,
+  // 					       phiStart, phiTotal, thetaStart, thetaTotal);
 
   // Inner volume
   G4double innerVolume_rMin = 0.0;
   G4double innerVolume_rMax = 13.97*cm;
   G4double innerVolume_length = 40.64*cm;
-  G4Tubs* solidInnerVolume = new G4Tubs("InnerVolume", innerVolume_rMin, innerVolume_rMax,
-					   innerVolume_length/2, phiStart, phiTotal);
-
-  // Copper layer
-  G4double copperLayer_thickness = 0.29464*cm;
-  G4double copperLayer_rMin = 0.0;
-  G4double copperLayer_rMax = innerVolume_rMax + copperLayer_thickness;
-  G4double copperLayer_halfLength = innerVolume_length/2 + copperLayer_thickness;
-  G4Tubs* solidCopperLayer = new G4Tubs("CopperLayer", copperLayer_rMin, copperLayer_rMax,
-					copperLayer_halfLength, phiStart, phiTotal);
-
-  // Cobalt-60 calibration source
-  G4double co60Disk_rMin = 0.0;
-  G4double co60Disk_rMax = 0.75*cm;
-  G4double co60Disk_halfLength = 2*mm;
-  G4Tubs* solidCo60Disk = new G4Tubs("Co60Disk", co60Disk_rMin, co60Disk_rMax,
-				     co60Disk_halfLength, phiStart, phiTotal);
-
-  // Lead shield
-  G4double leadShield_thickness = 10.16*cm;
-  G4double leadShield_rMin = 0.0;
-  G4double leadShield_rMax = innerVolume_rMax + copperLayer_thickness + leadShield_thickness + 0.01*cm;
-  G4double leadShield_length = innerVolume_length + 2*copperLayer_thickness + 2*leadShield_thickness + 0.01*cm;
-  G4Tubs* solidLeadShield = new G4Tubs("LeadShield", leadShield_rMin, leadShield_rMax, leadShield_length/2,
-				       phiStart, phiTotal);
+  // G4Tubs* solidInnerVolume = new G4Tubs("InnerVolume", innerVolume_rMin, innerVolume_rMax,
+  // 					   innerVolume_length/2, phiStart, phiTotal);
 
   // Cryostat
   G4double cryostat_rMin = 0.0;
@@ -113,18 +92,49 @@ G4VPhysicalVolume* VT1DetectorConstruction::Construct()
   G4Tubs* solidCryostat = new G4Tubs("Cryostat", cryostat_rMin, cryostat_rMax, cryostat_length/2,
 				     phiStart, phiTotal);
 
+  // Copper layer
+  G4double copperLayer_thickness = 0.29464*cm;
+  G4double copperLayer_rMin = cryostat_rMax + 0.01*cm;
+  G4double copperLayer_rMax = innerVolume_rMax + copperLayer_thickness;
+  G4double copperLayer_halfLength = (innerVolume_length/2) + copperLayer_thickness;
+  G4Tubs* solidCopperLayer = new G4Tubs("CopperLayer", copperLayer_rMin, copperLayer_rMax,
+					copperLayer_halfLength, phiStart, phiTotal);
+
+  // Cobalt-60 calibration source
+  G4double co60Disk_rMin = 0.0;
+  G4double co60Disk_rMax = 0.75*cm;
+  G4double co60Disk_halfLength = 2*mm;
+  G4Tubs* solidCo60Disk = new G4Tubs("Co60Disk", co60Disk_rMin, co60Disk_rMax,
+  				     co60Disk_halfLength, phiStart, phiTotal);
+
+  // Lead shield
+  G4double leadShield_thickness = 10.16*cm;
+  G4double leadShield_rMin = copperLayer_rMax + 0.01*cm;
+  G4double leadShield_rMax = innerVolume_rMax + copperLayer_thickness + leadShield_thickness + 0.01*cm;
+  G4double leadShield_length = innerVolume_length + 2*copperLayer_thickness + 2*leadShield_thickness + 0.01*cm;
+  // G4double leadShieldCavity_rMin = 0.0;
+  // G4double leadShieldCavity_rMax = 0.80*cm;
+  // G4double leadShieldCavity_halfLength = 2.5*mm;
+  G4Tubs* solidLeadShield = new G4Tubs("LeadShield", leadShield_rMin, leadShield_rMax, leadShield_length/2,
+				       phiStart, phiTotal);
+  // G4Tubs* solidLeadShieldCavity = new G4Tubs("LeadShieldCavity", leadShieldCavity_rMin, leadShieldCavity_rMax,
+  // 					     leadShieldCavity_halfLength, phiStart, phiTotal);
+  // G4SubtractionSolid* solidLeadShield = new G4SubtractionSolid("LeadShield", solidLeadShieldPreCavity, solidLeadShieldCavity,
+  // 							       0, G4ThreeVector(0.0,0.0, copperLayer_halfLength + 2.5*mm));
+					     
+
   // Cryostat cavity
   G4double MgPlate_thickness = 1.0*mm;
   G4double cryostat_thickness = 1.3*mm;
   G4double cryostatCavity_rMin = 0.0;
   G4double cryostatCavity_rMax = cryostat_rMax - cryostat_thickness;
-  G4double cryostatCavity_halfLength = cryostat_length/2 - MgPlate_thickness;
+  G4double cryostatCavity_halfLength = (cryostat_length/2) - MgPlate_thickness;
   G4Tubs* solidCryostatCavity = new G4Tubs("CryostatCavity", cryostatCavity_rMin, cryostatCavity_rMax,
 					   cryostatCavity_halfLength, phiStart, phiTotal);
 
   // Note: for the moment, the crystal is simulated as a simple germanium cylinder
   G4double crystal_rMin = 0.0;
-  G4double crystal_rMax = 55.8/2*mm;
+  G4double crystal_rMax = (55.8/2)*mm;
   G4double crystal_length = 75.7*mm;
   G4Tubs* solidCrystal = new G4Tubs("Crystal", crystal_rMin, crystal_rMax, crystal_length/2, phiStart, phiTotal);
 
@@ -144,7 +154,7 @@ G4VPhysicalVolume* VT1DetectorConstruction::Construct()
 				     phiStart, phiTotal);
 
   // Mount cup base (note: its parameters are already specified above)
-  G4Tubs* solidMountCupBase = new G4Tubs("MountCupBase", mountCup_rMin, mountCup_rMax, mountCupBase_thickness/2,
+  G4Tubs* solidMountCupBase = new G4Tubs("MountCupBase", 0.0, mountCup_rMax, mountCupBase_thickness/2,
 					 phiStart, phiTotal);
 
   // Cold finger
@@ -202,8 +212,8 @@ G4VPhysicalVolume* VT1DetectorConstruction::Construct()
 						phiStart, phiTotal);
 
   G4LogicalVolume* logicWorld = new G4LogicalVolume(solidWorld, air, "World");
-  G4LogicalVolume* logicOuterSphere = new G4LogicalVolume(solidOuterSphere, air, "OuterSphere");
-  G4LogicalVolume* logicInnerVolume = new G4LogicalVolume(solidInnerVolume, air, "InnerVolume");
+  //G4LogicalVolume* logicOuterSphere = new G4LogicalVolume(solidOuterSphere, air, "OuterSphere");
+  //G4LogicalVolume* logicInnerVolume = new G4LogicalVolume(solidInnerVolume, air, "InnerVolume");
   G4LogicalVolume* logicCopperLayer = new G4LogicalVolume(solidCopperLayer, Cu, "CopperLayer");
   G4LogicalVolume* logicCo60Disk = new G4LogicalVolume(solidCo60Disk, Co, "Co60Disk");
   G4LogicalVolume* logicLeadShield = new G4LogicalVolume(solidLeadShield, Pb, "LeadShield");
@@ -226,7 +236,7 @@ G4VPhysicalVolume* VT1DetectorConstruction::Construct()
   G4double crystal_offset = 4*mm;
   G4double cryostat_offset = -10.16*cm;
   G4double alCylinder_offset = 1*cm;
-  G4double Co60Disk_offset = (cryostat_length)/2 + 4*cm;
+  G4double Co60Disk_offset = (innerVolume_length/2) + copperLayer_thickness;
   G4double crystal_zPos = (cavity_height/2) - (crystal_length/2) - crystal_offset;
   G4double mountCupWall_zPos = (cavity_height/2) - (mountCupWall_length/2) - crystal_offset
     + (irShield_thickness/2) + 0.01*cm;
@@ -247,14 +257,14 @@ G4VPhysicalVolume* VT1DetectorConstruction::Construct()
   G4double cryostatCopperRod_zPos = mountCupBase_zPos - (mountCupBase_thickness/2)
     - (cryostatCopperRod_length/2);
 
-  G4ThreeVector crystalPlacement(0,0, crystal_zPos);
-  G4ThreeVector cryostatPlacement(0, 0, cryostat_zPos);
+  G4ThreeVector crystalPlacement(0,0,crystal_zPos);
+  G4ThreeVector cryostatPlacement(0,0,cryostat_zPos);
   G4ThreeVector mountCupWallPlacement(0,0,mountCupWall_zPos);
   G4ThreeVector irShieldPlacement(0,0,irShield_zPos);
   G4ThreeVector mountCupBasePlacement(0,0,mountCupBase_zPos);
   G4ThreeVector copperPlatePlacement(0,0,copperPlate_zPos);
   G4ThreeVector coldFingerPlacement(coldFinger_xPos,
-				    0., coldFinger_zPos);
+				    0,coldFinger_zPos);
   G4ThreeVector alCylinderPlacement(0,0,alCylinder_zPos);
   G4ThreeVector alMountPlacement(0,0,alMount_zPos);
   G4ThreeVector copperRodPlacement(0,0,copperRod_zPos);
@@ -266,25 +276,25 @@ G4VPhysicalVolume* VT1DetectorConstruction::Construct()
 
   // Placement of physical volumes  
   fPhysWorld = new G4PVPlacement(0, G4ThreeVector(), logicWorld, "World", 0, false, 0, true);
-  fPhysOuterSphere = new G4PVPlacement(0, G4ThreeVector(), logicOuterSphere, "OuterSphere", logicWorld, false, 0, true);
-  fPhysInnerVolume = new G4PVPlacement(0, G4ThreeVector(), logicInnerVolume, "InnerVolume", logicWorld, false, 0, true);
-  fPhysLeadShield = new G4PVPlacement(0, G4ThreeVector(), logicLeadShield, "LeadShield", logicInnerVolume, false, 0, true);
-  fPhysCopperLayer = new G4PVPlacement(0, copperPlatePlacement, logicCopperLayer, "CopperLayer", logicLeadShield, false, 0, true);
-  fPhysCo60Disk = new G4PVPlacement(0, co60DiskPlacement, logicCo60Disk, "Co60Disk", logicInnerVolume, false, 0, true);
-  fPhysCryostat = new G4PVPlacement(0, cryostatPlacement, logicCryostat, "Cryostat", logicInnerVolume, false, 0, true);
+  //fPhysOuterSphere = new G4PVPlacement(0, G4ThreeVector(), logicOuterSphere, "OuterSphere", logicWorld, false, 0, true);
+  //fPhysInnerVolume = new G4PVPlacement(0, G4ThreeVector(), logicInnerVolume, "InnerVolume", logicWorld, false, 0, true);
+  fPhysLeadShield = new G4PVPlacement(0, G4ThreeVector(), logicLeadShield, "LeadShield", logicWorld, false, 0, true);
+  fPhysCopperLayer = new G4PVPlacement(0, copperPlatePlacement, logicCopperLayer, "CopperLayer", logicWorld, false, 0, true);
+  fPhysCo60Disk = new G4PVPlacement(0, co60DiskPlacement, logicCo60Disk, "Co60Disk", logicWorld, false, 0, true);
+  fPhysCryostat = new G4PVPlacement(0, cryostatPlacement, logicCryostat, "Cryostat", logicWorld, false, 0, true);
   fPhysCryostatCavity = new G4PVPlacement(0, G4ThreeVector(), logicCryostatCavity, "CryostatCavity", logicCryostat, false, 0, true);
   fPhysCrystal = new G4PVPlacement(0, crystalPlacement, logicCrystal, "Crystal", logicCryostatCavity, false, 0, true);
   fPhysMountCupWall = new G4PVPlacement(0, mountCupWallPlacement, logicMountCupWall, "MountCupWall", logicCryostatCavity, false, 0, true);
   fPhysIRShield = new G4PVPlacement(0, irShieldPlacement, logicIRShield, "IRShield", logicCryostatCavity, false, 0, true);
   fPhysMountCupBase = new G4PVPlacement(0, mountCupBasePlacement, logicMountCupBase, "MountCupBase", logicCryostatCavity, false, 0, true);
-  fPhysColdFinger = new G4PVPlacement(yRot, coldFingerPlacement, logicColdFinger, "ColdFinger", logicInnerVolume, false, 0, true);
+  fPhysColdFinger = new G4PVPlacement(yRot, coldFingerPlacement, logicColdFinger, "ColdFinger", logicWorld, false, 0, true);
   fPhysCopperPlate = new G4PVPlacement(0, copperPlatePlacement, logicCopperPlate, "CopperPlate", logicCryostatCavity, false, 0, true);
-  fPhysAlCylinder = new G4PVPlacement(0, alCylinderPlacement, logicAlCylinder, "AlCylinder", logicInnerVolume, false, 0, true);
-  fPhysAlMount = new G4PVPlacement(0, alMountPlacement, logicAlMount, "AlMount", logicInnerVolume, false, 0, true);
-  fPhysCopperRod = new G4PVPlacement(0, copperRodPlacement, logicCopperRod, "CopperRod", logicInnerVolume, false, 0, true);
+  fPhysAlCylinder = new G4PVPlacement(0, alCylinderPlacement, logicAlCylinder, "AlCylinder", logicWorld, false, 0, true);
+  fPhysAlMount = new G4PVPlacement(0, alMountPlacement, logicAlMount, "AlMount", logicWorld, false, 0, true);
+  fPhysCopperRod = new G4PVPlacement(0, copperRodPlacement, logicCopperRod, "CopperRod", logicWorld, false, 0, true);
   fPhysCryostatCopperRod = new G4PVPlacement(0, cryostatCopperRodPlacement, logicCryostatCopperRod, "CryostatCopperRod", logicCryostatCavity,
 					     false, 0, true);
-  fPhysColdFingerCopperRod = new G4PVPlacement(yRot, coldFingerPlacement, logicColdFingerCopperRod, "ColdFingerCopperRod", logicInnerVolume,
+  fPhysColdFingerCopperRod = new G4PVPlacement(yRot, coldFingerPlacement, logicColdFingerCopperRod, "ColdFingerCopperRod", logicWorld,
 					       false, 0, true);
   return fPhysWorld;
 }
