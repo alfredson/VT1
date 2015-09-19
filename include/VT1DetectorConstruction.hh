@@ -17,8 +17,6 @@ public:
   
   virtual G4VPhysicalVolume* Construct();
   const G4VPhysicalVolume* GetGermaniumCyl() {return fPhysCrystal;};
-  //G4VPhysicalVolume* GetOuterSphere() {return fPhysOuterSphere;};
-  //G4VPhysicalVolume* GetInnerVolume() {return fPhysInnerVolume;};
   G4VPhysicalVolume* GetLeadShield() {return fPhysLeadShield;};
   G4VPhysicalVolume* GetCopperLayer() {return fPhysCopperLayer;};
   G4VPhysicalVolume* GetCryostat() {return fPhysCryostat;};
@@ -38,8 +36,6 @@ public:
 
 private:
   G4VPhysicalVolume* fPhysCrystal;
-  //G4VPhysicalVolume* fPhysOuterSphere;
-  //G4VPhysicalVolume* fPhysInnerVolume;
   G4VPhysicalVolume* fPhysLeadShield;
   G4VPhysicalVolume* fPhysCopperLayer;
   G4VPhysicalVolume* fPhysCryostat;
